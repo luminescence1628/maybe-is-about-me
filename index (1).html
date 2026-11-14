@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#7899a8">
+<title>MY COMPUTER — 個人電腦</title>
+<style>
+:root{
+  --ink:#26343a; --muted:#718087; --line:#b7c5c8;
+  --panel:#edf1ed; --panel2:#dce5e2; --title1:#527d8a; --title2:#91b0b5;
+  --accent:#d5a66e; --shadow:0 14px 38px #14252b55, inset 0 1px #ffffffaa;
+  --task:#344d59; --task2:#7899a8; --paper:#f8f7f0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink)}
+button,input{font:inherit}
+button{cursor:pointer}
+#boot{position:fixed;inset:0;z-index:1000;background:radial-gradient(ellipse at 50% 45%,#25343a,#090f14 75%);color:#eaf1ed;display:flex;align-items:center;justify-content:center;transition:opacity .5s}
+.boot-inner{width:min(390px,82vw);text-align:center}
+.boot-mark{font-family:Georgia,serif;font-size:clamp(27px,5vw,42px);letter-spacing:.12em;margin-bottom:8px}
+.boot-sub{font-size:11px;letter-spacing:.22em;color:#a7b8b6;margin-bottom:34px}
+.boot-track{height:10px;border:1px solid #8fa7a8;padding:2px;border-radius:2px;background:#101b20}
+#boot-fill{height:100%;width:0;background:linear-gradient(90deg,#8db8b3,#e1c18e);transition:width .12s}
+.boot-meta{display:flex;justify-content:space-between;font-size:12px;color:#c5d0ca;margin-top:10px}
+#desktop{position:relative;width:100%;height:100%;overflow:hidden;background:
+ linear-gradient(135deg,#b9c9c0aa,#819ca0aa),
+ url("https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=2200&q=85") center/cover,
+ linear-gradient(135deg,#879fa0,#d2d5bd)}
+#desktop:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(120deg,#dce5d522,transparent 45%,#1d303322)}
+.desktop-top{position:absolute;top:18px;left:22px;right:22px;display:flex;justify-content:space-between;align-items:flex-start;z-index:2;pointer-events:none}
+.brand{pointer-events:auto;background:#e9eee5d9;border:1px solid #ffffffaa;border-radius:10px;padding:9px 13px;box-shadow:0 5px 16px #233b3d22;backdrop-filter:blur(8px)}
+.brand b{display:block;font-family:Georgia,serif;letter-spacing:.12em;font-size:13px}
+.brand span{font-size:10px;color:#64777a;letter-spacing:.1em}
+.desktop-note{font-size:11px;letter-spacing:.12em;color:#fff;text-shadow:0 1px 5px #263b40;pointer-events:none}
+#icons{position:absolute;z-index:3;top:100px;left:22px;display:grid;grid-template-columns:repeat(2,90px);gap:18px 12px}
+.desktop-icon{width:84px;min-height:88px;border:1px solid transparent;border-radius:9px;background:transparent;color:white;text-shadow:0 1px 4px #142b32;text-align:center;padding:6px 3px;display:flex;flex-direction:column;align-items:center;gap:5px}
+.desktop-icon:hover,.desktop-icon:focus-visible{background:#e9f0ed45;border-color:#ffffff88;outline:none}
+.icon-art{width:43px;height:37px;position:relative;filter:drop-shadow(0 3px 3px #172e3538)}
+.folder{position:absolute;left:3px;top:10px;width:37px;height:25px;border-radius:3px 4px 5px 5px;background:linear-gradient(#e8d4a2,#b58c58);border:1px solid #8c744e}
+.folder:before{content:"";position:absolute;top:-6px;left:2px;width:16px;height:8px;border-radius:3px 3px 0 0;background:#d9bd83;border:1px solid #8c744e;border-bottom:0}
+.folder:after{content:"";position:absolute;inset:3px 2px 2px;border-top:1px solid #f9e8bd}
+.icon-art.web:before{content:"◎";position:absolute;inset:0;font-size:39px;line-height:37px;color:#d9e8e3;text-shadow:0 1px #526f76}
+.icon-art.pc:before{content:"";position:absolute;left:3px;top:2px;width:35px;height:25px;border:3px solid #dce7e3;border-radius:4px;background:linear-gradient(135deg,#8fb5bb,#4b7884)}
+.icon-art.pc:after{content:"";position:absolute;left:17px;top:28px;width:9px;height:5px;background:#dce7e3;box-shadow:-5px 5px 0 -1px #dce7e3,5px 5px 0 -1px #dce7e3}
+.icon-art.bin:before{content:"";position:absolute;left:9px;top:8px;width:25px;height:27px;background:linear-gradient(90deg,#d8e3dd,#a6b9b2);border:1px solid #617b79;transform:skew(-3deg);border-radius:2px}
+.icon-art.bin:after{content:"";position:absolute;left:7px;top:4px;width:29px;height:5px;background:#e8eee9;border:1px solid #617b79;border-radius:2px}
+.icon-label{font-size:12px;line-height:1.35;max-width:84px}
+#windows{position:absolute;inset:0 0 43px;z-index:5;pointer-events:none}
+.window{position:absolute;left:clamp(12px,15vw,220px);top:clamp(65px,13vh,120px);width:min(650px,calc(100vw - 30px));height:min(470px,calc(100% - 95px));min-width:270px;min-height:210px;background:var(--panel);border:1px solid #f8ffff;border-radius:9px 9px 5px 5px;box-shadow:var(--shadow);overflow:hidden;pointer-events:auto;display:flex;flex-direction:column}
+.window.active{z-index:20}
+.window.maximized{left:8px!important;top:8px!important;width:calc(100% - 16px)!important;height:calc(100% - 16px)!important}
+.titlebar{height:35px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 7px 0 12px;color:#fff;background:linear-gradient(100deg,var(--title1),var(--title2));border-bottom:1px solid #496b75;cursor:grab;user-select:none}
+.titlebar:active{cursor:grabbing}
+.window-title{font-size:12px;font-weight:700;letter-spacing:.04em;display:flex;align-items:center;gap:8px}
+.window-title .mini-folder{width:15px;height:12px;background:#e4c98e;border:1px solid #98794b;border-radius:2px}
+.window-controls{display:flex;gap:4px}
+.window-controls button{width:23px;height:21px;border:1px solid #d6e4df;border-radius:4px;background:linear-gradient(#edf2ed,#c2d2cd);color:#344d54;font-weight:700;line-height:1;padding:0;box-shadow:inset 0 1px white}
+.window-controls button.close{background:linear-gradient(#e9b6a6,#c87867);color:#fff;border-color:#f2d0c5}
+.window-body{overflow:auto;flex:1;padding:17px;background:linear-gradient(135deg,#f7f8f2,#e8eeea)}
+.window-status{height:23px;flex:none;background:#e0e8e3;border-top:1px solid #c2d0ca;padding:3px 10px;font-size:10px;color:#72817c}
+.welcome-card{border:1px solid #d5dfd8;background:#fffdf6;border-radius:9px;padding:17px;margin-bottom:13px}
+.eyebrow{font-size:10px;letter-spacing:.18em;color:#8a9b95;text-transform:uppercase}
+.welcome-card h2{font-family:Georgia,"Noto Serif TC",serif;font-size:23px;font-weight:500;margin:7px 0;color:#425e64}
+.welcome-card p{font-size:13px;line-height:1.8;color:#657477;margin:0}
+.notice-box{border:1px dashed #c8b698;background:#fcf8ee;border-radius:7px;padding:11px 13px;margin-bottom:13px;font-size:12px;line-height:1.75;color:#6c5c43}
+.notice-box strong{display:block;font-size:11px;letter-spacing:.12em;color:#997648;margin-bottom:4px}
+.section-heading{font-size:14px;margin:14px 0 9px;color:#536d70;font-weight:700}
+.tile-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:9px}
+.tile{border:1px solid #d5dfd9;border-radius:7px;background:#fbfcf8;padding:11px;text-align:left;color:#40565a;min-height:69px}
+.tile:hover{background:#fff;border-color:#9bb6b1;box-shadow:0 3px 10px #45625c18}
+.tile strong{display:block;font-size:12px;margin-bottom:5px}
+.tile small{font-size:10px;color:#84918d}
+.entry-list{display:flex;flex-direction:column;gap:8px}
+.entry{background:#fffdf8;border:1px solid #dce4dd;border-radius:7px;padding:10px 12px}
+.entry-head{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.entry h3{font-size:13px;margin:0;color:#455e62;font-weight:500}
+.entry p{font-size:11px;line-height:1.7;margin:5px 0 0;color:#778582}
+.tag{font-size:10px;color:#8a704d;background:#f2e9d8;border-radius:20px;padding:3px 8px;white-space:nowrap}
+.tag.like{color:#496b75;background:#dceae8}
+.tag.dream{color:#9e5964;background:#f6e2e5}
+.profile-layout{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:start}
+.profile-avatar{height:120px;width:120px;border-radius:8px;overflow:hidden;border:1px solid #d5dfd8;box-shadow:inset 0 1px white;background:#fff}
+.profile-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.profile-layout p{font-size:12px;line-height:1.85;color:#576866;margin:4px 0}
+.profile-list{margin:4px 0 12px;padding-left:18px;font-size:12px;line-height:1.85;color:#576866}
+.profile-list li{margin-bottom:4px}
+.warn-card{background:#fdf7f6;border:1px solid #e5ceca;border-radius:7px;padding:10px 12px;margin-top:8px;font-size:12px;line-height:1.8;color:#6d4c49}
+.warn-card b{color:#a1534d}
+.dream-form{display:flex;gap:7px;margin:10px 0}
+.dream-form input{flex:1;min-width:0;border:1px solid #cbd8d0;border-radius:5px;padding:9px;background:white;font-size:12px}
+.dream-form button,.soft-button{border:1px solid #9db2aa;background:linear-gradient(#fff,#e3ebe5);border-radius:5px;padding:8px 12px;color:#4d6764;font-size:11px}
+#taskbar{position:absolute;z-index:50;bottom:0;left:0;right:0;height:43px;background:linear-gradient(#7898a2,#3e606d);border-top:1px solid #c7d8d3;display:flex;align-items:center;padding:4px 8px;gap:7px;box-shadow:0 -3px 12px #20383d30}
+#start-button{height:34px;min-width:84px;border:1px solid #d6e3d8;border-radius:5px 13px 13px 5px;background:linear-gradient(#9dbd9c,#557f6a);color:white;text-shadow:0 1px 2px #29483c;font-weight:700;font-style:italic;box-shadow:inset 0 1px #ffffff88}
+#task-items{display:flex;gap:5px;flex:1;min-width:0;overflow:auto}
+.task-item{max-width:170px;min-width:95px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:1px solid #9db5b7;border-radius:4px;background:#d6e1dc;color:#415b61;font-size:10px;padding:7px 9px;text-align:left}
+.task-item.active{background:#f3f5ed;box-shadow:inset 0 1px white}
+.clock{color:#f5f5e9;font-size:11px;line-height:1.25;min-width:68px;text-align:center;padding:2px 8px;border-left:1px solid #ffffff55;display:flex;flex-direction:column;justify-content:center;align-items:center;user-select:none}
+.clock span{font-size:9px;opacity:.92;letter-spacing:.03em}
+#start-menu{position:absolute;z-index:60;bottom:43px;left:8px;width:min(300px,calc(100vw - 16px));background:#e9eee7;border:1px solid #f8fff9;border-radius:8px 8px 0 0;box-shadow:0 8px 25px #162d3155;overflow:hidden;display:none}
+#start-menu.open{display:block}
+.start-head{padding:13px;color:white;background:linear-gradient(110deg,#567b83,#9bb8b0);font-family:Georgia,serif;letter-spacing:.08em}
+.start-links{padding:8px;display:grid;gap:4px}
+.start-links button{text-align:left;padding:10px;border:0;border-radius:5px;background:transparent;color:#4b6060;font-size:12px}
+.start-links button:hover{background:#d8e5dd}
+.start-foot{background:#dbe5df;padding:8px;text-align:right;font-size:10px;color:#74847d}
+#toast{position:absolute;z-index:100;bottom:55px;right:14px;background:#f8f7ee;border:1px solid #d5ded7;border-radius:6px;padding:8px 12px;font-size:11px;color:#60736f;box-shadow:0 4px 15px #1a333333;display:none}
+@media(max-width:600px){
+ #icons{top:90px;left:12px;grid-template-columns:repeat(3,minmax(68px,1fr));right:12px;gap:10px 5px}
+ .desktop-icon{width:100%;min-height:78px}
+ .icon-art{transform:scale(.92)}
+ .icon-label{font-size:11px}
+ .desktop-top{top:12px;left:12px;right:12px}
+ .desktop-note{display:none}
+ .window{left:7px!important;top:72px!important;width:calc(100% - 14px)!important;height:calc(100% - 125px)!important;min-width:0;min-height:0}
+ .window.maximized{top:7px!important;height:calc(100% - 14px)!important}
+ .window-body{padding:12px}
+ .profile-layout{grid-template-columns:85px 1fr;gap:10px}
+ .profile-avatar{width:85px;height:85px}
+ #taskbar{height:45px;padding:4px}
+ #start-button{min-width:62px;font-size:12px}
+ .task-item{min-width:70px;max-width:110px;padding:7px 6px}
+ .clock{font-size:10px;min-width:58px;padding:2px 4px}
+ .clock span{font-size:8.5px}
+}
+</style>
+</head>
+<body>
+<div id="boot" aria-label="開機畫面">
+  <div class="boot-inner">
+    <div class="boot-mark">MY COMPUTER</div>
+    <div class="boot-sub">PERSONAL COMPUTER SYSTEM</div>
+    <div class="boot-track"><div id="boot-fill"></div></div>
+    <div class="boot-meta"><span id="boot-label">正在啟動電腦…</span><b id="boot-percent">0%</b></div>
+  </div>
+</div>
+<main id="desktop">
+  <header class="desktop-top">
+    <div class="brand"><b>MY COMPUTER</b><span>PERSONAL COMPUTER · 2026</span></div>
+    <div class="desktop-note">double click to open ✦</div>
+  </header>
+  <nav id="icons" aria-label="桌面捷徑">
+    <button class="desktop-icon" data-open="profile"><span class="icon-art"><i class="folder"></i></span><span class="icon-label">個人資料</span></button>
+    <button class="desktop-icon" data-open="collection"><span class="icon-art"><i class="folder"></i></span><span class="icon-label">坑單</span></button>
+    <button class="desktop-icon" data-open="favorites"><span class="icon-art"><i class="folder"></i></span><span class="icon-label">推角</span></button>
+    <button class="desktop-icon" data-open="dream"><span class="icon-art web"></span><span class="icon-label">夢網</span></button>
+    <button class="desktop-icon" data-open="computer"><span class="icon-art pc"></span><span class="icon-label">我的電腦</span></button>
+    <button class="desktop-icon" data-open="recycle"><span class="icon-art bin"></span><span class="icon-label">回收桶</span></button>
+  </nav>
+  <section id="windows" aria-label="視窗區"></section>
+  <div id="start-menu">
+    <div class="start-head">MY COMPUTER</div>
+    <div class="start-links">
+      <button data-open="profile">▣ 個人資料</button>
+      <button data-open="collection">▣ 坑單收藏</button>
+      <button data-open="favorites">▣ 推角資料夾</button>
+      <button data-open="dream">◎ 夢網連結</button>
+    </div>
+    <div class="start-foot">最後更新時間：2026</div>
+  </div>
+  <div id="toast"></div>
+  <footer id="taskbar">
+    <button id="start-button">✿ start</button>
+    <div id="task-items"></div>
+    <div class="clock" id="clock" title="台灣標準時間 (UTC+8)">00:00<span>2026/01/01</span></div>
+  </footer>
+</main>
+<script>
+// ==================== 編輯區：日後新增內容主要修改這裡 ====================
+const SITE_DATA = {
+  profile: {
+    title: "個人資料",
+    nickname: "枳 / 慕煙",
+    intro: "隨意稱呼也可",
+    avatar: "avatar.jpeg",
+    aboutList: [
+      "是已成年的金牛女",
+      "雖然是FB發文友限熱愛者，但更喜歡出沒在友列的留言區，同坑的話可能也會很常看到我在社團收東西（蛤）",
+      "版上可能會出現：日常、碎碎念、抽獎文、約／想約的圖、遊戲相關、微量週邊、棉花娃娃",
+      "喜歡蠻多角色的（花心鬼）",
+      "除因自身問題拒夏彥夢女／同嫁（太常碰到怪人了，故預防性拒絕），但不拒同擔／推，其他的皆不拒"
+    ],
+    myTaboos: "貼臉、剽竊、抄襲、代餐、隱屬、乙女腐、雙面人、未滿 16 歲、生理男玩乙遊",
+    yourTaboos: "秒讀、髒話、寶寶／寶貝、笑死、超好笑、括弧後問號／文字、生理男玩家、不知道怎麼回會丟表符"
+  },
+  collection: [
+    {
+      name: "正在玩的遊戲",
+      desc: "包含乙遊與非乙遊。",
+      items: [
+        "世界之外｜乙遊",
+        "戀與深空｜乙遊",
+        "未定事件簿｜乙遊",
+        "光與夜之戀｜乙遊",
+        "時空中的繪旅人｜乙遊",
+        "原神｜非乙遊",
+        "異環｜非乙遊",
+        "星穹鐵道｜非乙遊",
+        "傳說對決｜非乙遊",
+        "世界計畫｜非乙遊",
+        "燕雲十六聲｜非乙遊"
+      ]
+    },
+    {
+      name: "淡坑／棄遊的遊戲",
+      desc: "曾經喜歡、現在暫時離開或就是離開的作品。",
+      items: [
+        "光遇｜淡坑／棄遊",
+        "鳴潮｜淡坑／棄遊",
+        "逆水寒｜淡坑／棄遊",
+        "絕區零｜淡坑／棄遊",
+        "代號鳶｜淡坑／棄遊",
+        "花亦山｜淡坑／棄遊",
+        "戀與製作人｜淡坑／棄遊",
+        "夜幕之下（代號砰砰）｜淡坑／棄遊"
+      ]
+    },
+    {
+      name: "已下架的遊戲",
+      desc: "已下架、停止營運，但永遠留在記憶裡的作品。",
+      items: [
+        "靈貓傳｜已下架",
+        "掌門太忙｜已下架",
+        "少女的王座｜已下架",
+        "美男吸血鬼｜已下架",
+        "黑貓奇聞社｜已下架"
+      ]
+    },
+    {
+      name: "小說",
+      desc: "有晉江、番茄與其他小說。",
+      items: [
+        "藏夏｜晉江",
+        "嫁反派｜晉江",
+        "退退退退下｜晉江",
+        "暗戀橘生淮南｜晉江",
+        "黑蓮花攻略手冊｜晉江",
+        "滿級綠茶穿成小可憐｜晉江",
+        "小殿下他腦子有坑｜番茄",
+        "我家小師妹有妄想症｜番茄",
+        "盜墓筆記｜其他小說",
+        "金庸｜其他小說"
+      ]
+    },
+    {
+      name: "動漫＆漫畫",
+      desc: "就動漫跟漫畫，對...。",
+      items: [
+        "七龍珠｜動漫",
+        "網球王子｜動漫",
+        "閃電十一人｜動漫",
+        "名偵探柯南｜動漫",
+        "怦然心動｜漫畫",
+        "我的唯一｜漫畫",
+        "養敵為患｜漫畫",
+        "再度與你｜漫畫",
+        "晝夜連綿｜漫畫",
+        "吾凰在上｜漫畫",
+        "巫祝少女｜漫畫",
+        "花開未滿｜漫畫",
+        "笙笙予你｜漫畫",
+        "朝花惜時｜漫畫",
+        "甜美的咬痕｜漫畫",
+        "戀是櫻草色｜漫畫",
+        "塵夢劇本館｜漫畫",
+        "漸近的心跳｜漫畫",
+        "女帝多藍顏｜漫畫",
+        "狐狸的陷阱｜漫畫",
+        "皇弟，莫提刀｜漫畫",
+        "花與隱匿之鳥｜漫畫",
+        "愛上傲嬌龍王爺｜漫畫",
+        "花和刺蝟逃跑了｜漫畫",
+        "六月的不期而遇｜漫畫",
+        "這一世我來當家主｜漫畫",
+        "又見面了，樓小姐｜漫畫",
+        "拯救我的高一八班｜漫畫",
+        "據說我是反派大小姐｜漫畫"
+      ]
+    },
+    {
+      name: "追星",
+      desc: "喜歡的歌手、演員或偶像團體。",
+      items: [
+        "呂允｜歌手",
+        "汪蘇瀧｜歌手",
+        "周翊然｜藝人",
+        "黃明昊｜藝人",
+        "時代少年團｜團體（團偏祺、文）",
+        "明宰鉉｜Boynextdoor"
+      ]
+    },
+    {
+      name: "綜藝＆劇",
+      desc: "如標題。",
+      items: [
+        "密室大逃脫｜綜藝",
+        "開始推理吧｜綜藝",
+        "女子推理社｜綜藝",
+        "全員加速中｜綜藝",
+        "快樂再出發｜綜藝",
+        "快樂老友記｜綜藝",
+        "超少年密碼｜戲劇",
+        "暗戀橘生淮南｜戲劇",
+        "如此可愛的我們｜戲劇",
+        "我們的少年時代｜戲劇"
+      ]
+    },
+    {
+      name: "CV老師＆VT",
+      desc: "喜歡的聲優老師與 VTuber 。",
+      items: [
+        "阿杰｜CV老師",
+        "谷江山｜CV老師",
+        "孫路路｜CV老師",
+        "蘇尚卿｜CV老師",
+        "Kinsen｜VT",
+        "鹿 kana｜VT",
+        "Alban Knox｜VT"
+      ]
+    }
+  ],
+  favorites: [
+    {
+      name: "乙遊",
+      desc: "",
+      notice: "Notice：此區為皆有戀愛想法，有夢的會在後方標注。",
+      items: [
+        "夏彥（夢）｜未定事件簿",
+        "蕭逸（主推）｜光與夜之戀",
+        "夏鳴星（副推）｜光與夜之戀",
+        "艾因｜時空中的繪旅人",
+        "沈星回｜戀與深空",
+        "顧時夜｜世界之外"
+      ]
+    },
+    {
+      name: "非乙遊",
+      desc: "",
+      notice: "Notice：1. 是代入黨 2. 分成「喜歡（但無戀愛想法）」與「好感」",
+      items: [
+        "陸景和｜未定事件簿・好感",
+        "傅融｜代號鳶・喜歡",
+        "魈｜原神・喜歡",
+        "基尼奇｜原神・喜歡",
+        "杜林｜原神・好感",
+        "希格雯｜原神・好感",
+        "茜特菈莉｜原神・好感",
+        "哥倫比亞｜原神・好感",
+        "葉洛亞｜原神・好感",
+        "洛恩｜原神・好感",
+        "木偶｜原神・好感",
+        "米提亞｜原神・好感",
+        "丹恆｜星穹鐵道・喜歡",
+        "銀狼｜星穹鐵道・喜歡",
+        "砂金｜星穹鐵道・喜歡",
+        "阮梅｜星穹鐵道・好感",
+        "花火｜星穹鐵道・好感",
+        "托帕｜星穹鐵道・好感",
+        "大黑塔｜星穹鐵道・好感",
+        "緹寶｜星穹鐵道・好感",
+        "遐蝶｜星穹鐵道・好感",
+        "昔漣｜星穹鐵道・好感",
+        "十四夜｜花亦山・喜歡",
+        "了了｜花亦山・喜歡",
+        "星河｜花亦山・喜歡",
+        "瑩兒｜花亦山・喜歡",
+        "印飛星｜花亦山・喜歡",
+        "影初一｜花亦山・喜歡",
+        "鹿蜀｜花亦山・喜歡",
+        "月靈｜花亦山・喜歡",
+        "花忱｜花亦山・好感",
+        "花無晦｜花亦山・好感",
+        "宣望鈞｜花亦山・好感",
+        "宣行琮｜花亦山・好感",
+        "季元啟｜花亦山・好感",
+        "安如是｜花亦山・好感",
+        "青柳冬彌｜世界計畫・喜歡",
+        "白石杏｜世界計畫・好感",
+        "小豆澤心羽｜世界計畫・好感",
+        "宵崎奏｜世界計畫・好感"
+      ]
+    },
+    {
+      name: "已下架的遊戲",
+      desc: "",
+      items: [
+        "陸知也（小十六永遠有地位，還不確定自己有沒有夢）｜靈貓傳",
+        "唐瑭｜掌門太忙",
+        "花陵｜掌門太忙",
+        "阿爾貝・諾曼德｜少女的王座",
+        "亞力克斯・佩普西利亞｜少女的王座",
+        "文森・梵谷｜美男吸血鬼",
+        "艾薩克・牛頓｜美男吸血鬼",
+        "楚遙｜黑貓奇聞社"
+      ]
+    }
+  ],
+  dream: [
+    {
+      name: "枳待夏時",
+      url: "https://app.notion.com/p/3c37783267e38041a096f257ad07f742?source=copy_link",
+      desc: "夢網（暫時先這麼叫）— Notion 專屬頁面"
+    }
+  ]
+};
+// ==================== 以下為桌面互動功能，通常不需要修改 ====================
+const windowsEl=document.getElementById('windows'), taskItems=document.getElementById('task-items');
+const openWindows=new Map(); let z=10, activeId=null;
+const titles={profile:"個人資料",collection:"坑單",favorites:"推角",dream:"夢網",computer:"我的電腦",recycle:"回收桶"};
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function notify(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(notify.timer);notify.timer=setTimeout(()=>t.style.display='none',2200);}
+
+function profileContent(){
+  const d=SITE_DATA.profile;
+  return `
+    <div class="welcome-card">
+      <div class="eyebrow">USER PROFILE / ABOUT ME</div>
+      <h2>${esc(d.nickname)}</h2>
+      <p>${esc(d.intro)}</p>
+    </div>
+    <div class="profile-layout">
+      <div class="profile-avatar"><img src="${esc(d.avatar)}" alt="avatar"></div>
+      <div>
+        <div class="section-heading" style="margin-top:0">✦ ABOUT & 版面生態</div>
+        <ul class="profile-list">
+          ${(d.aboutList||[]).map(item=>`<li>${esc(item)}</li>`).join('')}
+        </ul>
+        <div class="warn-card">
+          <div><b>⚠ 雷點＆婉拒：</b>${esc(d.myTaboos)}</div>
+          <div style="margin-top:6px"><b>⚡ 你可能雷：</b>${esc(d.yourTaboos)}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function categoriesContent(kind){
+  const arr=SITE_DATA[kind]||[];
+  return `
+    <div class="welcome-card">
+      <div class="eyebrow">PERSONAL ARCHIVE</div>
+      <h2>${kind==="collection"?"我的坑單":"我的推角"} ✦</h2>
+      <p>點擊分類，瀏覽這個資料夾裡收藏的內容。</p>
+    </div>
+    <div class="tile-grid">
+      ${arr.map((c,i)=>`<button class="tile" data-category="${kind}" data-index="${i}"><strong>📁 ${esc(c.name)}</strong><small>${esc(c.desc||"打開資料夾")}（${(c.items||[]).length}）</small></button>`).join('')}
+    </div>`;
+}
+
+function categoryDetail(kind,index){
+  const c=SITE_DATA[kind][index];
+  const noticeHtml = c.notice ? `<div class="notice-box"><strong>觀前提醒 / NOTICE</strong>${esc(c.notice)}</div>` : '';
+  return `
+    <button class="soft-button" data-back="${kind}">← 返回${titles[kind]}</button>
+    <div class="welcome-card" style="margin-top:12px">
+      <div class="eyebrow">FOLDER CONTENTS</div>
+      <h2>${esc(c.name)}</h2>
+      <p>${esc(c.desc||"")}</p>
+    </div>
+    ${noticeHtml}
+    <div class="entry-list">
+      ${(c.items||[]).map(item=>{
+        const parts = item.split('｜');
+        const name = parts[0];
+        const tagText = parts[1] || '收藏';
+        let tagClass = 'tag';
+        if(tagText.includes('喜歡')) tagClass += ' like';
+        if(name.includes('（夢）')) tagClass += ' dream';
+        return `<div class="entry"><div class="entry-head"><h3>✧ ${esc(name)}</h3><span class="${tagClass}">${esc(tagText)}</span></div></div>`;
+      }).join('')||'<p>目前還沒有收藏內容。</p>'}
+    </div>`;
+}
+
+function dreamContent(){
+  return `
+    <div class="welcome-card">
+      <div class="eyebrow">INTERNET EXPLORER / BOOKMARKS</div>
+      <h2>夢網（暫時先這麼叫）</h2>
+      <p>收藏夢向與專屬網站。部分網站不允許被嵌入，遇到限制時可使用新分頁開啟。</p>
+    </div>
+    <form class="dream-form" id="dream-form">
+      <input id="dream-url" type="url" placeholder="https://example.com" required>
+      <button>前往</button>
+    </form>
+    <div class="entry-list">
+      ${SITE_DATA.dream.map((d,i)=>`
+        <div class="entry">
+          <div class="entry-head">
+            <h3>✦ ${esc(d.name)}</h3>
+            <a href="${esc(d.url)}" target="_blank" rel="noopener">新分頁 ↗</a>
+          </div>
+          <p>${esc(d.desc||d.url)}</p>
+          <button class="soft-button" style="margin-top:8px" data-embed="${i}">嘗試在視窗內開啟</button>
+        </div>`).join('')}
+    </div>
+    <div id="dream-embed"></div>`;
+}
+
+function contentFor(id){
+  if(id==="profile")return profileContent();
+  if(id==="collection"||id==="favorites")return categoriesContent(id);
+  if(id==="dream")return dreamContent();
+  if(id==="computer")return `<div class="welcome-card"><div class="eyebrow">SYSTEM</div><h2>我的電腦</h2><p>這是一個私人電腦桌面。選擇桌面上的資料夾，探索不同分類。</p></div><div class="tile-grid"><button class="tile" data-open="profile"><strong>▣ 個人資料</strong><small>關於我與雷點</small></button><button class="tile" data-open="collection"><strong>▣ 坑單</strong><small>作品收藏</small></button><button class="tile" data-open="favorites"><strong>▣ 推角</strong><small>角色收藏</small></button></div>`;
+  return `<div class="welcome-card"><div class="eyebrow">RECYCLE BIN</div><h2>回收桶是空的</h2><p>目前沒有項目。</p></div>`;
+}
+
+function openWindow(id){if(openWindows.has(id)){const w=openWindows.get(id);w.el.style.display='flex';w.min=false;focusWindow(id);renderTasks();return}
+ const el=document.createElement('section');el.className='window';el.dataset.id=id;el.style.left=`${Math.max(12,Math.min(window.innerWidth-300,120+openWindows.size*28))}px`;el.style.top=`${Math.max(55,70+openWindows.size*25)}px`;el.innerHTML=`<div class="titlebar"><div class="window-title"><i class="mini-folder"></i>${titles[id]||id}</div><div class="window-controls"><button data-min title="縮小">−</button><button data-max title="放大／還原">□</button><button class="close" data-close title="關閉">×</button></div></div><div class="window-body">${contentFor(id)}</div><div class="window-status">就緒 · 最後更新：2026</div>`;
+ windowsEl.appendChild(el);openWindows.set(id,{el,min:false,max:false});focusWindow(id);wireWindow(el,id);renderTasks();}
+function focusWindow(id){const w=openWindows.get(id);if(!w)return;z++;w.el.style.zIndex=z;activeId=id;document.querySelectorAll('.window').forEach(x=>x.classList.toggle('active',x.dataset.id===id));renderTasks();}
+function closeWindow(id){const w=openWindows.get(id);if(!w)return;w.el.remove();openWindows.delete(id);if(activeId===id)activeId=null;renderTasks();}
+function minimizeWindow(id){const w=openWindows.get(id);if(!w)return;w.el.style.display='none';w.min=true;if(activeId===id)activeId=null;renderTasks();}
+function maximizeWindow(id){const w=openWindows.get(id);if(!w)return;w.max=!w.max;w.el.classList.toggle('maximized',w.max);focusWindow(id);}
+function renderTasks(){taskItems.innerHTML='';for(const [id,w] of openWindows){const b=document.createElement('button');b.className='task-item'+(id===activeId&&!w.min?' active':'');b.textContent=titles[id];b.onclick=()=>{if(w.min){w.el.style.display='flex';w.min=false}focusWindow(id)};taskItems.appendChild(b)}}
+function wireWindow(el,id){el.addEventListener('mousedown',()=>focusWindow(id));el.querySelector('[data-close]').onclick=()=>closeWindow(id);el.querySelector('[data-min]').onclick=()=>minimizeWindow(id);el.querySelector('[data-max]').onclick=()=>maximizeWindow(id);
+ const bar=el.querySelector('.titlebar');let sx=0,sy=0,ox=0,oy=0,drag=false;
+ bar.addEventListener('pointerdown',e=>{if(e.target.closest('button')||el.classList.contains('maximized'))return;drag=true;bar.setPointerCapture(e.pointerId);sx=e.clientX;sy=e.clientY;const r=el.getBoundingClientRect();ox=r.left;oy=r.top;focusWindow(id)});
+ bar.addEventListener('pointermove',e=>{if(!drag)return;const maxX=window.innerWidth-el.offsetWidth;const maxY=window.innerHeight-55;el.style.left=Math.max(0,Math.min(maxX,ox+e.clientX-sx))+'px';el.style.top=Math.max(0,Math.min(maxY,oy+e.clientY-sy))+'px'});
+ bar.addEventListener('pointerup',()=>drag=false);bar.addEventListener('pointercancel',()=>drag=false);
+ el.addEventListener('click',e=>{const cat=e.target.closest('[data-category]');if(cat){const k=cat.dataset.category,i=Number(cat.dataset.index);el.querySelector('.window-body').innerHTML=categoryDetail(k,i);return}
+ const back=e.target.closest('[data-back]');if(back){el.querySelector('.window-body').innerHTML=categoriesContent(back.dataset.back);return}
+ const go=e.target.closest('[data-open]');if(go){openWindow(go.dataset.open);return}
+ const emb=e.target.closest('[data-embed]');if(emb){const item=SITE_DATA.dream[Number(emb.dataset.embed)];const target=el.querySelector('#dream-embed');target.innerHTML=`<div class="section-heading">網站預覽：${esc(item.name)}</div><iframe title="${esc(item.name)}" src="${esc(item.url)}" style="width:100%;height:230px;border:1px solid #cbd8d0;background:white;border-radius:6px"></iframe><p style="font-size:10px;color:#81908a">若網站拒絕嵌入，請使用上方「新分頁」連結。</p>`;return}
+ });
+ const form=el.querySelector('#dream-form');if(form)form.addEventListener('submit',e=>{e.preventDefault();const url=el.querySelector('#dream-url').value;window.open(url,'_blank','noopener')});
+}
+document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>{openWindow(b.dataset.open);document.getElementById('start-menu').classList.remove('open')}));
+document.getElementById('start-button').onclick=()=>document.getElementById('start-menu').classList.toggle('open');
+document.addEventListener('click',e=>{if(!e.target.closest('#start-menu')&&!e.target.closest('#start-button'))document.getElementById('start-menu').classList.remove('open')});
+function clock(){
+  const d=new Date();
+  const timeStr=d.toLocaleTimeString('zh-TW',{timeZone:'Asia/Taipei',hour:'2-digit',minute:'2-digit',hour12:false});
+  const dateStr=d.toLocaleDateString('zh-TW',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'});
+  document.getElementById('clock').innerHTML=`${timeStr}<span>${dateStr}</span>`;
+}
+clock();setInterval(clock,1000);
+let pct=0;const bootTimer=setInterval(()=>{pct=Math.min(100,pct+Math.ceil(Math.random()*9));document.getElementById('boot-fill').style.width=pct+'%';document.getElementById('boot-percent').textContent=pct+'%';if(pct>=100){clearInterval(bootTimer);document.getElementById('boot-label').textContent='啟動完成';setTimeout(()=>{const b=document.getElementById('boot');b.style.opacity='0';setTimeout(()=>b.remove(),550);},350)}},115);
+</script>
+</body>
+</html>
