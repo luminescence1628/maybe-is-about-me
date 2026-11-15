@@ -11,11 +11,47 @@
   --panel:#edf1ed; --panel2:#dce5e2; --title1:#527d8a; --title2:#91b0b5;
   --accent:#d5a66e; --shadow:0 14px 38px #14252b55, inset 0 1px #ffffffaa;
   --task:#344d59; --task2:#7899a8; --paper:#f8f7f0;
+  
+  /* 復古像素白底黑框箭頭游標 */
+  --pixel-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M2 2v16l5-5 4 8 3-1-4-8h7z' fill='%23000'/%3E%3Cpath d='M4 4v11.5l3.5-3.5 3.5 7 2-1-3.5-7h6.5z' fill='%23fff'/%3E%3C/svg%3E") 2 2, auto;
+  
+  /* 經典 Windows 98 像素白底黑框小手指標 */
+  --pixel-pointer: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' shape-rendering='crispEdges'%3E%3Cpath d='M7 1h3v6h3v1h3v1h2v7h-1v3h-1v2H7v-2H6v-2H4v-2H3v-2H2v-2h3v1h2V1z' fill='%23000'/%3E%3Cpath d='M8 2h1v8h1V8h2v2h1V9h2v2h1v4h-1v3h-1v2H8v-2H7v-2H5v-2H4v-1h2v1h1v1h1V2z' fill='%23fff'/%3E%3C/svg%3E") 8 1, pointer;
+
+  /* 復古像素文字選取游標 */
+  --pixel-text: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' shape-rendering='crispEdges'%3E%3Cpath d='M6 2h8v2h-3v12h3v2H6v-2h3V4H6z' fill='%23000'/%3E%3Cpath d='M8 4h4v2H11v8h1v2H8v-2h1V6H8z' fill='%23fff'/%3E%3C/svg%3E") 10 10, text;
 }
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink)}
+html,body{
+  margin:0;width:100%;height:100%;overflow:hidden;
+  font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;
+  color:var(--ink);
+  cursor: var(--pixel-arrow);
+}
+/* 開機進度條期間隱藏游標 */
+body.booting, body.booting *{
+  cursor: none !important;
+}
 button,input{font:inherit}
-button{cursor:pointer}
+
+/* 全域互動元素改用經典像素小手 */
+body:not(.booting) button,
+body:not(.booting) a,
+body:not(.booting) [data-open],
+body:not(.booting) [data-category],
+body:not(.booting) [data-back],
+body:not(.booting) [data-embed],
+body:not(.booting) .desktop-icon,
+body:not(.booting) .task-item,
+body:not(.booting) .titlebar button{
+  cursor: var(--pixel-pointer) !important;
+}
+
+/* 輸入框使用像素文字游標 */
+body:not(.booting) input{
+  cursor: var(--pixel-text) !important;
+}
+
 #boot{position:fixed;inset:0;z-index:1000;background:radial-gradient(ellipse at 50% 45%,#25343a,#090f14 75%);color:#eaf1ed;display:flex;align-items:center;justify-content:center;transition:opacity .5s}
 .boot-inner{width:min(390px,82vw);text-align:center}
 .boot-mark{font-family:Georgia,serif;font-size:clamp(27px,5vw,42px);letter-spacing:.12em;margin-bottom:8px}
@@ -50,8 +86,7 @@ button{cursor:pointer}
 .window{position:absolute;left:clamp(12px,15vw,220px);top:clamp(65px,13vh,120px);width:min(650px,calc(100vw - 30px));height:min(470px,calc(100% - 95px));min-width:270px;min-height:210px;background:var(--panel);border:1px solid #f8ffff;border-radius:9px 9px 5px 5px;box-shadow:var(--shadow);overflow:hidden;pointer-events:auto;display:flex;flex-direction:column}
 .window.active{z-index:20}
 .window.maximized{left:8px!important;top:8px!important;width:calc(100% - 16px)!important;height:calc(100% - 16px)!important}
-.titlebar{height:35px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 7px 0 12px;color:#fff;background:linear-gradient(100deg,var(--title1),var(--title2));border-bottom:1px solid #496b75;cursor:grab;user-select:none}
-.titlebar:active{cursor:grabbing}
+.titlebar{height:35px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 7px 0 12px;color:#fff;background:linear-gradient(100deg,var(--title1),var(--title2));border-bottom:1px solid #496b75;user-select:none}
 .window-title{font-size:12px;font-weight:700;letter-spacing:.04em;display:flex;align-items:center;gap:8px}
 .window-title .mini-folder{width:15px;height:12px;background:#e4c98e;border:1px solid #98794b;border-radius:2px}
 .window-controls{display:flex;gap:4px}
@@ -105,6 +140,17 @@ button{cursor:pointer}
 .start-links button:hover{background:#d8e5dd}
 .start-foot{background:#dbe5df;padding:8px;text-align:right;font-size:10px;color:#74847d}
 #toast{position:absolute;z-index:100;bottom:55px;right:14px;background:#f8f7ee;border:1px solid #d5ded7;border-radius:6px;padding:8px 12px;font-size:11px;color:#60736f;box-shadow:0 4px 15px #1a333333;display:none}
+
+/* 黑白流星拖尾粒子畫布 */
+#meteor-trail-canvas{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:9999;
+}
+
 @media(max-width:600px){
  #icons{top:18px;left:12px;grid-template-columns:repeat(3,minmax(68px,1fr));right:12px;gap:10px 5px}
  .desktop-icon{width:100%;min-height:78px}
@@ -125,7 +171,9 @@ button{cursor:pointer}
 }
 </style>
 </head>
-<body>
+<body class="booting">
+<canvas id="meteor-trail-canvas" aria-hidden="true"></canvas>
+
 <div id="boot" aria-label="開機畫面">
   <div class="boot-inner">
     <div class="boot-mark">MY COMPUTER</div>
@@ -136,12 +184,12 @@ button{cursor:pointer}
 </div>
 <main id="desktop">
   <nav id="icons" aria-label="桌面捷徑">
+    <button class="desktop-icon" data-open="recycle"><span class="icon-art bin"></span><span class="icon-label">回收桶</span></button>
+    <button class="desktop-icon" data-open="computer"><span class="icon-art pc"></span><span class="icon-label">我的電腦</span></button>
     <button class="desktop-icon" data-open="profile"><span class="icon-art"><i class="folder"></i></span><span class="icon-label">個人資料</span></button>
     <button class="desktop-icon" data-open="collection"><span class="icon-art"><i class="folder"></i></span><span class="icon-label">坑單</span></button>
     <button class="desktop-icon" data-open="favorites"><span class="icon-art"><i class="folder"></i></span><span class="icon-label">推角</span></button>
     <button class="desktop-icon" data-open="dream"><span class="icon-art web"></span><span class="icon-label">夢網</span></button>
-    <button class="desktop-icon" data-open="computer"><span class="icon-art pc"></span><span class="icon-label">我的電腦</span></button>
-    <button class="desktop-icon" data-open="recycle"><span class="icon-art bin"></span><span class="icon-label">回收桶</span></button>
   </nav>
   <section id="windows" aria-label="視窗區"></section>
   <div id="start-menu">
@@ -529,7 +577,228 @@ function clock(){
   document.getElementById('clock').innerHTML=`${timeStr}<span>${dateStr}</span>`;
 }
 clock();setInterval(clock,1000);
-let pct=0;const bootTimer=setInterval(()=>{pct=Math.min(100,pct+Math.ceil(Math.random()*9));document.getElementById('boot-fill').style.width=pct+'%';document.getElementById('boot-percent').textContent=pct+'%';if(pct>=100){clearInterval(bootTimer);document.getElementById('boot-label').textContent='啟動完成';setTimeout(()=>{const b=document.getElementById('boot');b.style.opacity='0';setTimeout(()=>b.remove(),550);},350)}},115);
+
+let isBooting = true;
+let pct=0;const bootTimer=setInterval(()=>{pct=Math.min(100,pct+Math.ceil(Math.random()*9));document.getElementById('boot-fill').style.width=pct+'%';document.getElementById('boot-percent').textContent=pct+'%';if(pct>=100){clearInterval(bootTimer);document.getElementById('boot-label').textContent='啟動完成';setTimeout(()=>{const b=document.getElementById('boot');b.style.opacity='0';isBooting=false;document.body.classList.remove('booting');setTimeout(()=>b.remove(),550);},350)}},115);
+
+// ==================== 黑白流星拖尾特效 ====================
+(function initMonochromeMeteorTrail() {
+  const canvas = document.getElementById('meteor-trail-canvas');
+  const ctx = canvas.getContext('2d');
+  let w = canvas.width = window.innerWidth;
+  let h = canvas.height = window.innerHeight;
+
+  window.addEventListener('resize', () => {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  });
+
+  const meteors = [];
+  const sparkles = [];
+  let lastX = null;
+  let lastY = null;
+
+  function drawSparkle(ctx, s) {
+    ctx.save();
+    ctx.globalAlpha = Math.max(0, Math.min(1, s.life));
+    ctx.translate(s.x, s.y);
+    ctx.rotate(s.rotation);
+
+    const r = s.size * (0.4 + s.life * 0.6);
+    const inner = r * 0.28;
+
+    ctx.beginPath();
+    for (let i = 0; i < 8; i++) {
+      const rad = i % 2 === 0 ? r : inner;
+      const ang = (i * Math.PI) / 4;
+      const px = Math.cos(ang) * rad;
+      const py = Math.sin(ang) * rad;
+      if (i === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+
+    ctx.fillStyle = s.isWhite ? '#ffffff' : '#181a1b';
+    ctx.fill();
+    ctx.lineWidth = 0.9;
+    ctx.strokeStyle = s.isWhite ? '#181a1b' : '#ffffff';
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function drawMeteor(ctx, m) {
+    if (m.history.length < 2) return;
+    ctx.save();
+
+    for (let i = 1; i < m.history.length; i++) {
+      const p0 = m.history[i - 1];
+      const p1 = m.history[i];
+      const ratio = i / m.history.length;
+
+      ctx.beginPath();
+      ctx.moveTo(p0.x, p0.y);
+      ctx.lineTo(p1.x, p1.y);
+      ctx.lineCap = 'round';
+      ctx.lineWidth = m.thickness * ratio + 2.2;
+      ctx.strokeStyle = `rgba(18, 20, 22, ${m.life * ratio * 0.55})`;
+      ctx.stroke();
+    }
+
+    for (let i = 1; i < m.history.length; i++) {
+      const p0 = m.history[i - 1];
+      const p1 = m.history[i];
+      const ratio = i / m.history.length;
+
+      ctx.beginPath();
+      ctx.moveTo(p0.x, p0.y);
+      ctx.lineTo(p1.x, p1.y);
+      ctx.lineCap = 'round';
+      ctx.lineWidth = Math.max(0.8, m.thickness * ratio);
+      ctx.strokeStyle = `rgba(255, 255, 255, ${m.life * ratio * 0.95})`;
+      ctx.stroke();
+    }
+
+    const head = m.history[m.history.length - 1];
+    ctx.globalAlpha = Math.max(0, Math.min(1, m.life));
+    ctx.translate(head.x, head.y);
+    ctx.rotate(m.angle);
+
+    const r = m.headSize * (0.6 + m.life * 0.4);
+    ctx.beginPath();
+    for (let i = 0; i < 8; i++) {
+      const rad = i % 2 === 0 ? r : r * 0.3;
+      const ang = (i * Math.PI) / 4;
+      const px = Math.cos(ang) * rad;
+      const py = Math.sin(ang) * rad;
+      if (i === 0) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fillStyle = '#ffffff';
+    ctx.fill();
+    ctx.lineWidth = 1.1;
+    ctx.strokeStyle = '#141618';
+    ctx.stroke();
+
+    ctx.restore();
+  }
+
+  function spawnMeteor(x, y, vx, vy, burst = false) {
+    const speed = Math.hypot(vx, vy);
+    const angle = speed > 0.1 ? Math.atan2(vy, vx) : (Math.PI * 0.75 + (Math.random() - 0.5) * 0.4);
+    const moveSpeed = burst ? (2.2 + Math.random() * 2.5) : (1.2 + Math.min(2.5, speed * 0.18));
+
+    meteors.push({
+      x,
+      y,
+      vx: Math.cos(angle) * moveSpeed,
+      vy: Math.sin(angle) * moveSpeed,
+      angle,
+      thickness: burst ? 3.2 : (2.2 + Math.random() * 1.2),
+      headSize: burst ? 6.5 : (4.5 + Math.random() * 2),
+      maxHistory: burst ? 14 : 12,
+      history: [{ x, y }],
+      life: 1,
+      decay: burst ? 0.032 : 0.038
+    });
+
+    if (meteors.length > 45) {
+      meteors.splice(0, meteors.length - 45);
+    }
+  }
+
+  function spawnSparkles(x, y, count = 1) {
+    for (let i = 0; i < count; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const spd = 0.3 + Math.random() * 1.1;
+      sparkles.push({
+        x: x + (Math.random() - 0.5) * 8,
+        y: y + (Math.random() - 0.5) * 8,
+        vx: Math.cos(ang) * spd,
+        vy: Math.sin(ang) * spd + 0.25,
+        size: 3 + Math.random() * 3.5,
+        rotation: Math.random() * Math.PI,
+        vRot: (Math.random() - 0.5) * 0.1,
+        isWhite: Math.random() > 0.3,
+        life: 1,
+        decay: 0.03 + Math.random() * 0.02
+      });
+    }
+    if (sparkles.length > 90) {
+      sparkles.splice(0, sparkles.length - 90);
+    }
+  }
+
+  window.addEventListener('pointermove', (e) => {
+    if (isBooting) return;
+    if (lastX === null || lastY === null) {
+      lastX = e.clientX;
+      lastY = e.clientY;
+      return;
+    }
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
+    const dist = Math.hypot(dx, dy);
+
+    if (dist >= 12) {
+      spawnMeteor(e.clientX, e.clientY, dx, dy, false);
+      if (Math.random() > 0.35) {
+        spawnSparkles(e.clientX, e.clientY, 1);
+      }
+      lastX = e.clientX;
+      lastY = e.clientY;
+    }
+  }, { passive: true });
+
+  window.addEventListener('pointerdown', (e) => {
+    if (isBooting) return;
+    const count = 6;
+    for (let i = 0; i < count; i++) {
+      const ang = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.3;
+      spawnMeteor(e.clientX, e.clientY, Math.cos(ang) * 10, Math.sin(ang) * 10, true);
+    }
+    spawnSparkles(e.clientX, e.clientY, 6);
+  }, { passive: true });
+
+  function animate() {
+    ctx.clearRect(0, 0, w, h);
+
+    for (let i = meteors.length - 1; i >= 0; i--) {
+      const m = meteors[i];
+      m.x += m.vx;
+      m.y += m.vy;
+      m.history.push({ x: m.x, y: m.y });
+      if (m.history.length > m.maxHistory) {
+        m.history.shift();
+      }
+      m.life -= m.decay;
+
+      if (m.life <= 0) {
+        meteors.splice(i, 1);
+        continue;
+      }
+      drawMeteor(ctx, m);
+    }
+
+    for (let i = sparkles.length - 1; i >= 0; i--) {
+      const s = sparkles[i];
+      s.x += s.vx;
+      s.y += s.vy;
+      s.rotation += s.vRot;
+      s.life -= s.decay;
+
+      if (s.life <= 0) {
+        sparkles.splice(i, 1);
+        continue;
+      }
+      drawSparkle(ctx, s);
+    }
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+})();
 </script>
 </body>
 </html>
