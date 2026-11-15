@@ -543,7 +543,7 @@ function contentFor(id){
   if(id==="profile")return profileContent();
   if(id==="collection"||id==="favorites")return categoriesContent(id);
   if(id==="dream")return dreamContent();
-  if(id==="computer")return `<div class="welcome-card"><div class="eyebrow">SYSTEM</div><h2>我的電腦</h2><p>這是阿枳(也就是我)的電腦桌面。點擊底下資料夾，可以看到相關內容。</p></div><div class="tile-grid"><button class="tile" data-open="profile"><strong>▣ 個人資料</strong><small>關於我與雷點</small></button><button class="tile" data-open="collection"><strong>▣ 坑單</strong><small>作品收藏</small></button><button class="tile" data-open="favorites"><strong>▣ 推角</strong><small>角色收藏</small></button></div>`;
+  if(id==="computer")return `<div class="welcome-card"><div class="eyebrow">SYSTEM</div><h2>我的電腦</h2><p>這是阿枳(也就是我)的電腦桌面，點擊底下資料夾，可以看到相關內容。</p></div><div class="tile-grid"><button class="tile" data-open="profile"><strong>▣ 個人資料</strong><small>關於我與雷點</small></button><button class="tile" data-open="collection"><strong>▣ 坑單</strong><small>坑很多很多...</small></button><button class="tile" data-open="favorites"><strong>▣ 推角</strong><small>喜歡的</small></button></div>`;
   return `<div class="welcome-card"><div class="eyebrow">RECYCLE BIN</div><h2>回收桶是空的</h2><p>目前沒有項目。</p></div>`;
 }
 
