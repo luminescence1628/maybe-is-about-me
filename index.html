@@ -486,7 +486,7 @@ function categoriesContent(kind){
       <p>點擊分類瀏覽。</p>
     </div>
     <div class="tile-grid">
-      ${arr.map((c,i)=>`<button class="tile" data-category="${kind}" data-index="${i}"><strong>📁 ${esc(c.name)}</strong><small>${esc(c.desc||"打開資料夾")}（${(c.items||[]).length}）</small></button>`).join('')}
+      ${arr.map((c,i)=>`<button class="tile" data-category="${kind}" data-index="${i}"><strong>📁 ${esc(c.name)}</strong><small>${esc(c.desc||"")}（${(c.items||[]).length}）</small></button>`).join('')}
     </div>`;
 }
 
