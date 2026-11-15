@@ -200,7 +200,7 @@ body:not(.booting) input{
       <button data-open="favorites">▣ 推角資料夾</button>
       <button data-open="dream">◎ 夢網連結</button>
     </div>
-    <div class="start-foot">最後更新時間：2026</div>
+    <div class="start-foot">最後更新時間：2026/11/15</div>
   </div>
   <div id="toast"></div>
   <footer id="taskbar">
@@ -548,7 +548,7 @@ function contentFor(id){
 }
 
 function openWindow(id){if(openWindows.has(id)){const w=openWindows.get(id);w.el.style.display='flex';w.min=false;focusWindow(id);renderTasks();return}
- const el=document.createElement('section');el.className='window';el.dataset.id=id;el.style.left=`${Math.max(12,Math.min(window.innerWidth-300,120+openWindows.size*28))}px`;el.style.top=`${Math.max(55,70+openWindows.size*25)}px`;el.innerHTML=`<div class="titlebar"><div class="window-title"><i class="mini-folder"></i>${titles[id]||id}</div><div class="window-controls"><button data-min title="縮小">−</button><button data-max title="放大／還原">□</button><button class="close" data-close title="關閉">×</button></div></div><div class="window-body">${contentFor(id)}</div><div class="window-status">就緒 · 最後更新：2026</div>`;
+ const el=document.createElement('section');el.className='window';el.dataset.id=id;el.style.left=`${Math.max(12,Math.min(window.innerWidth-300,120+openWindows.size*28))}px`;el.style.top=`${Math.max(55,70+openWindows.size*25)}px`;el.innerHTML=`<div class="titlebar"><div class="window-title"><i class="mini-folder"></i>${titles[id]||id}</div><div class="window-controls"><button data-min title="縮小">−</button><button data-max title="放大／還原">□</button><button class="close" data-close title="關閉">×</button></div></div><div class="window-body">${contentFor(id)}</div><div class="window-status">就緒 · 最後更新：2026/11/15</div>`;
  windowsEl.appendChild(el);openWindows.set(id,{el,min:false,max:false});focusWindow(id);wireWindow(el,id);renderTasks();}
 function focusWindow(id){const w=openWindows.get(id);if(!w)return;z++;w.el.style.zIndex=z;activeId=id;document.querySelectorAll('.window').forEach(x=>x.classList.toggle('active',x.dataset.id===id));renderTasks();}
 function closeWindow(id){const w=openWindows.get(id);if(!w)return;w.el.remove();openWindows.delete(id);if(activeId===id)activeId=null;renderTasks();}
