@@ -40,7 +40,6 @@ body:not(.booting) a,
 body:not(.booting) [data-open],
 body:not(.booting) [data-category],
 body:not(.booting) [data-back],
-body:not(.booting) [data-embed],
 body:not(.booting) .desktop-icon,
 body:not(.booting) .task-item,
 body:not(.booting) .titlebar button{
@@ -70,18 +69,32 @@ body:not(.booting) input{
 .brand span{font-size:10px;color:#64777a;letter-spacing:.1em}
 .desktop-note{font-size:11px;letter-spacing:.12em;color:#fff;text-shadow:0 1px 5px #263b40;pointer-events:none}
 #icons{position:absolute;z-index:3;top:24px;left:22px;display:grid;grid-template-columns:repeat(2,90px);gap:18px 12px}
-.desktop-icon{width:84px;min-height:88px;border:1px solid transparent;border-radius:9px;background:transparent;color:white;text-shadow:0 1px 4px #142b32;text-align:center;padding:6px 3px;display:flex;flex-direction:column;align-items:center;gap:5px}
-.desktop-icon:hover,.desktop-icon:focus-visible{background:#e9f0ed45;border-color:#ffffff88;outline:none}
-.icon-art{width:43px;height:37px;position:relative;filter:drop-shadow(0 3px 3px #172e3538)}
-.folder{position:absolute;left:3px;top:10px;width:37px;height:25px;border-radius:3px 4px 5px 5px;background:linear-gradient(#e8d4a2,#b58c58);border:1px solid #8c744e}
-.folder:before{content:"";position:absolute;top:-6px;left:2px;width:16px;height:8px;border-radius:3px 3px 0 0;background:#d9bd83;border:1px solid #8c744e;border-bottom:0}
-.folder:after{content:"";position:absolute;inset:3px 2px 2px;border-top:1px solid #f9e8bd}
-.icon-art.web:before{content:"◎";position:absolute;inset:0;font-size:39px;line-height:37px;color:#d9e8e3;text-shadow:0 1px #526f76}
-.icon-art.pc:before{content:"";position:absolute;left:3px;top:2px;width:35px;height:25px;border:3px solid #dce7e3;border-radius:4px;background:linear-gradient(135deg,#8fb5bb,#4b7884)}
-.icon-art.pc:after{content:"";position:absolute;left:17px;top:28px;width:9px;height:5px;background:#dce7e3;box-shadow:-5px 5px 0 -1px #dce7e3,5px 5px 0 -1px #dce7e3}
-.icon-art.bin:before{content:"";position:absolute;left:9px;top:8px;width:25px;height:27px;background:linear-gradient(90deg,#d8e3dd,#a6b9b2);border:1px solid #617b79;transform:skew(-3deg);border-radius:2px}
-.icon-art.bin:after{content:"";position:absolute;left:7px;top:4px;width:29px;height:5px;background:#e8eee9;border:1px solid #617b79;border-radius:2px}
-.icon-label{font-size:12px;line-height:1.35;max-width:84px}
+
+/* 純像素風格桌面 icon */
+.desktop-icon{width:84px;min-height:88px;border:none;background:transparent;color:white;text-shadow:0 1px 3px #000;text-align:center;padding:6px 3px;display:flex;flex-direction:column;align-items:center;gap:6px;shape-rendering:crispEdges;}
+.desktop-icon:hover,.desktop-icon:focus-visible{background:rgba(255,255,255,0.18);outline:none;}
+
+.icon-art{width:38px;height:34px;position:relative;image-rendering:pixelated;filter:drop-shadow(2px 2px 0px #000)}
+
+/* 像素 icon 樣式定義 */
+.icon-art.folder-art:before{content:"";position:absolute;left:2px;top:8px;width:34px;height:24px;background:#ffe680;border:2px solid #000}
+.icon-art.folder-art:after{content:"";position:absolute;left:2px;top:4px;width:14px;height:5px;background:#ffe680;border:2px solid #000;border-bottom:none}
+
+.icon-art.pc:before{content:"";position:absolute;left:2px;top:2px;width:34px;height:26px;background:#c0c0c0;border:2px solid #000}
+.icon-art.pc:after{content:"";position:absolute;left:10px;top:28px;width:18px;height:4px;background:#c0c0c0;border:2px solid #000}
+
+.icon-art.bin:before{content:"";position:absolute;left:6px;top:8px;width:26px;height:24px;background:#a0a0a0;border:2px solid #000}
+.icon-art.bin:after{content:"";position:absolute;left:4px;top:4px;width:30px;height:4px;background:#c0c0c0;border:2px solid #000}
+
+.icon-art.cloud:before{content:"";position:absolute;left:3px;top:10px;width:32px;height:16px;background:#fff;border:2px solid #000}
+.icon-art.cloud:after{content:"";position:absolute;left:10px;top:5px;width:18px;height:10px;background:#fff;border:2px solid #000;border-bottom:none}
+
+/* 視窗內的小型像素資料夾共用樣式 */
+.pixel-mini-folder{width:22px;height:18px;position:relative;display:inline-block;vertical-align:middle;margin-right:4px;image-rendering:pixelated}
+.pixel-mini-folder:before{content:"";position:absolute;left:0;top:4px;width:22px;height:14px;background:#ffe680;border:1.5px solid #000}
+.pixel-mini-folder:after{content:"";position:absolute;left:0;top:1px;width:9px;height:4px;background:#ffe680;border:1.5px solid #000;border-bottom:none}
+
+.icon-label{font-size:12px;line-height:1.35;max-width:84px;font-weight:bold;}
 #windows{position:absolute;inset:0 0 43px;z-index:5;pointer-events:none}
 .window{position:absolute;left:clamp(12px,15vw,220px);top:clamp(65px,13vh,120px);width:min(650px,calc(100vw - 30px));height:min(470px,calc(100% - 95px));min-width:270px;min-height:210px;background:var(--panel);border:1px solid #f8ffff;border-radius:9px 9px 5px 5px;box-shadow:var(--shadow);overflow:hidden;pointer-events:auto;display:flex;flex-direction:column}
 .window.active{z-index:20}
@@ -125,6 +138,7 @@ body:not(.booting) input{
 .dream-form{display:flex;gap:7px;margin:10px 0}
 .dream-form input{flex:1;min-width:0;border:1px solid #cbd8d0;border-radius:5px;padding:9px;background:white;font-size:12px}
 .dream-form button,.soft-button{border:1px solid #9db2aa;background:linear-gradient(#fff,#e3ebe5);border-radius:5px;padding:8px 12px;color:#4d6764;font-size:11px}
+
 #taskbar{position:absolute;z-index:50;bottom:0;left:0;right:0;height:43px;background:linear-gradient(#7898a2,#3e606d);border-top:1px solid #c7d8d3;display:flex;align-items:center;padding:4px 8px;gap:7px;box-shadow:0 -3px 12px #20383d30}
 #start-button{height:34px;min-width:84px;border:1px solid #d6e3d8;border-radius:5px 13px 13px 5px;background:linear-gradient(#9dbd9c,#557f6a);color:white;text-shadow:0 1px 2px #29483c;font-weight:700;font-style:italic;box-shadow:inset 0 1px #ffffff88}
 #task-items{display:flex;gap:5px;flex:1;min-width:0;overflow:auto}
@@ -186,10 +200,10 @@ body:not(.booting) input{
   <nav id="icons" aria-label="桌面捷徑">
     <button class="desktop-icon" data-open="recycle"><span class="icon-art bin"></span><span class="icon-label">回收桶</span></button>
     <button class="desktop-icon" data-open="computer"><span class="icon-art pc"></span><span class="icon-label">我的電腦</span></button>
-    <button class="desktop-icon" data-open="profile"><span class="icon-art"><i class="folder"></i></span><span class="icon-label">個人資料</span></button>
-    <button class="desktop-icon" data-open="collection"><span class="icon-art"><i class="folder"></i></span><span class="icon-label">坑單</span></button>
-    <button class="desktop-icon" data-open="favorites"><span class="icon-art"><i class="folder"></i></span><span class="icon-label">推角</span></button>
-    <button class="desktop-icon" data-open="dream"><span class="icon-art web"></span><span class="icon-label">夢網</span></button>
+    <button class="desktop-icon" data-open="profile"><span class="icon-art folder-art"></span><span class="icon-label">個人資料</span></button>
+    <button class="desktop-icon" data-open="collection"><span class="icon-art folder-art"></span><span class="icon-label">坑單</span></button>
+    <button class="desktop-icon" data-open="favorites"><span class="icon-art folder-art"></span><span class="icon-label">推角</span></button>
+    <button class="desktop-icon" data-open="dream"><span class="icon-art cloud"></span><span class="icon-label">夢網</span></button>
   </nav>
   <section id="windows" aria-label="視窗區"></section>
   <div id="start-menu">
@@ -198,7 +212,7 @@ body:not(.booting) input{
       <button data-open="profile">▣ 個人資料</button>
       <button data-open="collection">▣ 坑單收藏</button>
       <button data-open="favorites">▣ 推角資料夾</button>
-      <button data-open="dream">◎ 夢網連結</button>
+      <button data-open="dream">☁ 夢網連結</button>
     </div>
     <div class="start-foot">最後更新時間：2026/11/15</div>
   </div>
@@ -486,7 +500,7 @@ function categoriesContent(kind){
       <p>點擊分類瀏覽。</p>
     </div>
     <div class="tile-grid">
-      ${arr.map((c,i)=>`<button class="tile" data-category="${kind}" data-index="${i}"><strong>📁 ${esc(c.name)}</strong><small>${esc(c.desc||"")}（${(c.items||[]).length}）</small></button>`).join('')}
+      ${arr.map((c,i)=>`<button class="tile" data-category="${kind}" data-index="${i}"><strong><span class="pixel-mini-folder"></span>${esc(c.name)}</strong><small>${esc(c.desc||"")}（${(c.items||[]).length}）</small></button>`).join('')}
     </div>`;
 }
 
@@ -526,29 +540,27 @@ function dreamContent(){
       <button>前往</button>
     </form>
     <div class="entry-list">
-      ${SITE_DATA.dream.map((d,i)=>`
+      ${SITE_DATA.dream.map(d=>`
         <div class="entry">
           <div class="entry-head">
             <h3>✦ ${esc(d.name)}</h3>
             <a href="${esc(d.url)}" target="_blank" rel="noopener">新分頁 ↗</a>
           </div>
           <p>${esc(d.desc||d.url)}</p>
-          <button class="soft-button" style="margin-top:8px" data-embed="${i}">嘗試在視窗內開啟</button>
         </div>`).join('')}
-    </div>
-    <div id="dream-embed"></div>`;
+    </div>`;
 }
 
 function contentFor(id){
   if(id==="profile")return profileContent();
   if(id==="collection"||id==="favorites")return categoriesContent(id);
   if(id==="dream")return dreamContent();
-  if(id==="computer")return `<div class="welcome-card"><div class="eyebrow">SYSTEM</div><h2>我的電腦</h2><p>這是阿枳(也就是我)的電腦桌面，點擊底下資料夾，可以看到相關內容。</p></div><div class="tile-grid"><button class="tile" data-open="profile"><strong>▣ 個人資料</strong><small>關於我與雷點</small></button><button class="tile" data-open="collection"><strong>▣ 坑單</strong><small>坑很多很多...</small></button><button class="tile" data-open="favorites"><strong>▣ 推角</strong><small>喜歡的</small></button></div>`;
+  if(id==="computer")return `<div class="welcome-card"><div class="eyebrow">SYSTEM</div><h2>我的電腦</h2><p>這是阿枳(也就是我)的電腦桌面，點擊底下資料夾，可以看到相關內容。</p></div><div class="tile-grid"><button class="tile" data-open="profile"><strong><span class="pixel-mini-folder"></span>個人資料</strong><small>關於我與雷點</small></button><button class="tile" data-open="collection"><strong><span class="pixel-mini-folder"></span>坑單</strong><small>坑很多很多...</small></button><button class="tile" data-open="favorites"><strong><span class="pixel-mini-folder"></span>推角</strong><small>喜歡的</small></button></div>`;
   return `<div class="welcome-card"><div class="eyebrow">RECYCLE BIN</div><h2>回收桶是空的</h2><p>目前沒有項目。</p></div>`;
 }
 
 function openWindow(id){if(openWindows.has(id)){const w=openWindows.get(id);w.el.style.display='flex';w.min=false;focusWindow(id);renderTasks();return}
- const el=document.createElement('section');el.className='window';el.dataset.id=id;el.style.left=`${Math.max(12,Math.min(window.innerWidth-300,120+openWindows.size*28))}px`;el.style.top=`${Math.max(55,70+openWindows.size*25)}px`;el.innerHTML=`<div class="titlebar"><div class="window-title"><i class="mini-folder"></i>${titles[id]||id}</div><div class="window-controls"><button data-min title="縮小">−</button><button data-max title="放大／還原">□</button><button class="close" data-close title="關閉">×</button></div></div><div class="window-body">${contentFor(id)}</div><div class="window-status">就緒 · 最後更新：2026/11/15</div>`;
+ const el=document.createElement('section');el.className='window';el.dataset.id=id;el.style.left=`${Math.max(12,Math.min(window.innerWidth-300,120+openWindows.size*28))}px`;el.style.top=`${Math.max(55,70+openWindows.size*25)}px`;el.innerHTML=`<div class="titlebar"><div class="window-title"><span class="pixel-mini-folder"></span>${titles[id]||id}</div><div class="window-controls"><button data-min title="縮小">−</button><button data-max title="放大／還原">□</button><button class="close" data-close title="關閉">×</button></div></div><div class="window-body">${contentFor(id)}</div><div class="window-status">就緒 · 最後更新：2026/11/15</div>`;
  windowsEl.appendChild(el);openWindows.set(id,{el,min:false,max:false});focusWindow(id);wireWindow(el,id);renderTasks();}
 function focusWindow(id){const w=openWindows.get(id);if(!w)return;z++;w.el.style.zIndex=z;activeId=id;document.querySelectorAll('.window').forEach(x=>x.classList.toggle('active',x.dataset.id===id));renderTasks();}
 function closeWindow(id){const w=openWindows.get(id);if(!w)return;w.el.remove();openWindows.delete(id);if(activeId===id)activeId=null;renderTasks();}
@@ -560,13 +572,14 @@ function wireWindow(el,id){el.addEventListener('mousedown',()=>focusWindow(id));
  bar.addEventListener('pointerdown',e=>{if(e.target.closest('button')||el.classList.contains('maximized'))return;drag=true;bar.setPointerCapture(e.pointerId);sx=e.clientX;sy=e.clientY;const r=el.getBoundingClientRect();ox=r.left;oy=r.top;focusWindow(id)});
  bar.addEventListener('pointermove',e=>{if(!drag)return;const maxX=window.innerWidth-el.offsetWidth;const maxY=window.innerHeight-55;el.style.left=Math.max(0,Math.min(maxX,ox+e.clientX-sx))+'px';el.style.top=Math.max(0,Math.min(maxY,oy+e.clientY-sy))+'px'});
  bar.addEventListener('pointerup',()=>drag=false);bar.addEventListener('pointercancel',()=>drag=false);
- el.addEventListener('click',e=>{const cat=e.target.closest('[data-category]');if(cat){const k=cat.dataset.category,i=Number(cat.dataset.index);el.querySelector('.window-body').innerHTML=categoryDetail(k,i);return}
- const back=e.target.closest('[data-back]');if(back){el.querySelector('.window-body').innerHTML=categoriesContent(back.dataset.back);return}
- const go=e.target.closest('[data-open]');if(go){openWindow(go.dataset.open);return}
- const emb=e.target.closest('[data-embed]');if(emb){const item=SITE_DATA.dream[Number(emb.dataset.embed)];const target=el.querySelector('#dream-embed');target.innerHTML=`<div class="section-heading">網站預覽：${esc(item.name)}</div><iframe title="${esc(item.name)}" src="${esc(item.url)}" style="width:100%;height:230px;border:1px solid #cbd8d0;background:white;border-radius:6px"></iframe><p style="font-size:10px;color:#81908a">若網站拒絕嵌入，請使用上方「新分頁」連結。</p>`;return}
+ el.addEventListener('click',e=>{
+   const cat=e.target.closest('[data-category]');if(cat){const k=cat.dataset.category,i=Number(cat.dataset.index);el.querySelector('.window-body').innerHTML=categoryDetail(k,i);return}
+   const back=e.target.closest('[data-back]');if(back){el.querySelector('.window-body').innerHTML=categoriesContent(back.dataset.back);return}
+   const go=e.target.closest('[data-open]');if(go){openWindow(go.dataset.open);return}
  });
  const form=el.querySelector('#dream-form');if(form)form.addEventListener('submit',e=>{e.preventDefault();const url=el.querySelector('#dream-url').value;window.open(url,'_blank','noopener')});
 }
+
 document.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>{openWindow(b.dataset.open);document.getElementById('start-menu').classList.remove('open')}));
 document.getElementById('start-button').onclick=()=>document.getElementById('start-menu').classList.toggle('open');
 document.addEventListener('click',e=>{if(!e.target.closest('#start-menu')&&!e.target.closest('#start-button'))document.getElementById('start-menu').classList.remove('open')});
